@@ -1,19 +1,13 @@
-# daidai-front
+# jd-sku-reptile
 
-## Project setup
-```
-npm install
-```
+启动页面服务:
 
-### Compiles and hot-reloads for development
-```
-npm run serve
+```bash
+npm start
 ```
 
-### Compiles and minifies for production
-```
-npm run build
-```
+启动服务:
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+```bash
+npm run server
+```
