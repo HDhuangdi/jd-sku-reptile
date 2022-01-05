@@ -27,7 +27,7 @@
           ></el-input>
         </div>
         <el-button :disabled="buttonDisabled" type="primary" @click="query"
-          >一起摇滚吧🤘🏻</el-button
+          >开始下载</el-button
         >
       </form>
     </main>
@@ -41,10 +41,10 @@ import { ElMessage, ElLoading } from "element-plus";
 import axios from "axios";
 
 class Title {
-  static default = "来了,小老弟?";
-  static enter = "别摸我鸭o(>﹏<)o";
-  static loading = "🤘🏻寻找快乐ing...";
-  static end = "😍小帅哥还来玩不?";
+  static default = "京东sku评论爬虫工具";
+  static enter = "京东sku评论爬虫工具";
+  static loading = "爬取数据ing...";
+  static end = "京东sku评论爬虫工具";
 }
 
 const textList = [
@@ -88,10 +88,10 @@ function useApp(setTitle) {
 
   async function query() {
     if (isNaN(Number(page.value))) {
-      ElMessage.error("错了哦，请输入正确的页码捏~");
+      ElMessage.error("错了哦，请输入正确的页码");
     }
     if (isNaN(Number(pageSize.value))) {
-      ElMessage.error("错了哦，请输入正确的页容量捏~");
+      ElMessage.error("错了哦，请输入正确的页容量");
     }
     let loadingInstance = ElLoading.service({ target: "form" });
     setTitle(Title.loading);
@@ -107,9 +107,9 @@ function useApp(setTitle) {
       download(res.data, filename);
     } catch (e) {
       if (e.response && e.response.data) {
-        ElMessage.error("出错了哦, 错误详情: " + e.response.data);
+        ElMessage.error("出错了, 错误详情: " + e.response.data);
       } else {
-        ElMessage.error("出错了哦, 请联系小黄哦, 错误详情: " + e.message);
+        ElMessage.error("出错了, 错误详情: " + e.message);
       }
     } finally {
       loadingInstance.close();

@@ -1,6 +1,6 @@
-# jd-sku-reptile
+# jd-sku-reptile 京东 sku 评论爬虫工具
 
-启动页面服务:
+启动前台页面:
 
 ```bash
 npm start
