@@ -11,7 +11,8 @@ const ParamsException = require("./error/ParamsException");
 
 const app = express();
 
-app.get("/", async (req, res) => {
+app.get("/api", async (req, res) => {
+  console.log(111);
   const startTime = new Date().getTime();
   try {
     checkParams(req.query);

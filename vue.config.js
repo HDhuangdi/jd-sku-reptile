@@ -1,14 +1,13 @@
 const isDev = process.env.NODE_ENV === "development";
 
 module.exports = {
-  publicPath: isDev ? "/" : "/daidai/",
+  publicPath: "/",
   devServer: {
     disableHostCheck: true,
     open: false,
-    host: "127.0.0.1",
+    host: "localhost",
     proxy: {
-      "/daidaiapi": {
-        // target: "http://ruaruapig.xyz/daidaiapi",
+      "/api": {
         target: "http://localhost:3000",
         bypass: function(req, res, proxyOptions) {
           if (req.headers.accept.indexOf("html") !== -1) {
@@ -17,9 +16,9 @@ module.exports = {
         }, //只代理API
         secure: false,
         changeOrigin: true,
-        pathRewrite: {
-          "^/daidaiapi": "",
-        },
+        // pathRewrite: {
+        //   "^/daidaiapi": "",
+        // },
       },
     },
   },

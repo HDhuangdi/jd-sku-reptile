@@ -1,1 +1,0 @@
-npx cross-env NODE_ENV=prod nodemon ./script/app

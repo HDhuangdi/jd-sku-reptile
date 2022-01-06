@@ -97,7 +97,7 @@ function useApp(setTitle) {
     setTitle(Title.loading);
     try {
       const res = await axios({
-        url: `/daidaiapi?sku=${sku.value}&page=${page.value}&pageSize=${pageSize.value}`,
+        url: `/api?sku=${sku.value}&page=${page.value}&pageSize=${pageSize.value}`,
         method: "get",
         responseType: "blob",
       });
