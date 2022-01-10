@@ -12,7 +12,6 @@ const ParamsException = require("./error/ParamsException");
 const app = express();
 
 app.get("/api", async (req, res) => {
-  console.log(111);
   const startTime = new Date().getTime();
   try {
     checkParams(req.query);
@@ -24,7 +23,7 @@ app.get("/api", async (req, res) => {
     const targetPath = path.resolve(__dirname, "./comments/" + pathPrefix);
     const zipPath = targetPath + "/comments.zip";
 
-    const data = normalizeData("jd", JSON.parse(result));
+    const data = normalizeData("jd", result.data);
     // 去京东获取评论详情,评论图片
     await generateComments(pathPrefix, data);
     // 将详情和图片打包成zip
@@ -47,13 +46,17 @@ app.get("/api", async (req, res) => {
     });
 
     const endTime = new Date().getTime();
-    httpLogger.info(`请求:${req.url}, 响应成功, 用时${endTime - startTime}ms`);
+    httpLogger.info(
+      `请求:${req.url}, 响应成功, 用时${endTime - startTime}ms, ip:${req
+        .headers["x-real-ip"] || req.headers["x-forwarded-for"]}`
+    );
   } catch (e) {
     const endTime = new Date().getTime();
     errorLogger.error(
       `请求:${req.url}, 响应失败:${e}, 用时${endTime - startTime}ms`
     );
     res.status(500).send(e.message);
+    throw e;
   }
 });
 
@@ -63,4 +66,4 @@ function checkParams(query) {
   if (!query.pageSize) throw new ParamsException("未输入页容量!");
 }
 
-app.listen(3000);
+app.listen(4000);

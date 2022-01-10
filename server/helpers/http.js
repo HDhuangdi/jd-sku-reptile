@@ -1,6 +1,15 @@
 const https = require("https");
+const axios = require("axios");
 
 function getData(url) {
+  return axios.get(url, {
+    headers: {
+      Accept: "*/*",
+      Connection: "keep-alive",
+      "Accept-Encoding": "gzip, deflate, br",
+      "User-Agent": "PostmanRuntime/7.28.1",
+    },
+  });
   return new Promise((resolve, reject) => {
     https
       .get(url, (res) => {
@@ -29,7 +38,7 @@ function getPic(url) {
       res.on("end", () => {
         resolve(imgData);
       });
-      res.on("error", function (err) {
+      res.on("error", function(err) {
         reject(err);
       });
     });

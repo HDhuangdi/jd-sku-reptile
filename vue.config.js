@@ -8,7 +8,7 @@ module.exports = {
     host: "localhost",
     proxy: {
       "/api": {
-        target: "http://localhost:3000",
+        target: "http://localhost:4000",
         bypass: function(req, res, proxyOptions) {
           if (req.headers.accept.indexOf("html") !== -1) {
             return "/index.html";
