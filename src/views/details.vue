@@ -13,18 +13,8 @@
           <el-input v-model="sku" placeholder="这里写sku"></el-input>
         </div>
         <div class="form-item flex-box">
-          <span>页码:</span>
-          <el-input
-            v-model="page"
-            placeholder="这里写评论的页码,页码从0开始"
-          ></el-input>
-        </div>
-        <div class="form-item flex-box">
-          <span>页容量:</span>
-          <el-input
-            v-model="pageSize"
-            placeholder="打算一页放多少个评论呢?"
-          ></el-input>
+          <span>main-sku:</span>
+          <el-input v-model="mainSku" placeholder="这里写mainSku"></el-input>
         </div>
         <el-button :disabled="buttonDisabled" type="primary" @click="query"
           >开始下载</el-button
@@ -40,46 +30,34 @@ import { ElMessage, ElLoading } from "element-plus";
 import axios from "axios";
 
 class Title {
-  static default = "京东评论爬虫工具";
-  static enter = "京东评论爬虫工具";
+  static default = "京东主图、详情爬虫工具";
+  static enter = "京东主图、详情爬虫工具";
   static loading = "爬取数据ing...";
-  static end = "京东评论爬虫工具";
+  static end = "京东主图、详情爬虫工具";
 }
 
 function useApp(setTitle) {
   let sku = ref("");
-  let page = ref("0");
-  let pageSize = ref("10");
+  let mainSku = ref("");
   let buttonDisabled = ref(true);
 
   watch(sku, (newVal) => {
-    if (newVal.value !== "" && page.value !== "" && pageSize.value !== "") {
+    if (newVal.value !== "" && mainSku.value !== "") {
       buttonDisabled.value = false;
     }
   });
-  watch(page, (newVal) => {
-    if (newVal.value !== "" && sku.value !== "" && pageSize.value !== "") {
-      buttonDisabled.value = false;
-    }
-  });
-  watch(pageSize, (newVal) => {
-    if (newVal.value !== "" && page.value !== "" && sku.value !== "") {
+  watch(mainSku, (newVal) => {
+    if (newVal.value !== "" && sku.value !== "") {
       buttonDisabled.value = false;
     }
   });
 
   async function query() {
-    if (isNaN(Number(page.value))) {
-      ElMessage.error("错了哦，请输入正确的页码");
-    }
-    if (isNaN(Number(pageSize.value))) {
-      ElMessage.error("错了哦，请输入正确的页容量");
-    }
     let loadingInstance = ElLoading.service({ target: "form" });
     setTitle(Title.loading);
     try {
       const res = await axios({
-        url: `/api/comment/get?sku=${sku.value}&page=${page.value}&pageSize=${pageSize.value}`,
+        url: `/api/details/get?sku=${sku.value}&mainSku=${mainSku.value}`,
         method: "get",
         responseType: "blob",
       });
@@ -113,8 +91,7 @@ function useApp(setTitle) {
 
   return {
     sku,
-    page,
-    pageSize,
+    mainSku,
     buttonDisabled,
     query,
   };

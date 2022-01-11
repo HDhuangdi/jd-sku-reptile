@@ -12,8 +12,8 @@ const router = createRouter({
       component: () => import("@/views/comment.vue"),
     },
     {
-      path: "/main-pic",
-      component: () => import("@/views/main-pic.vue"),
+      path: "/details",
+      component: () => import("@/views/details.vue"),
     },
   ],
 });
