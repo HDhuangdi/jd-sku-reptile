@@ -12,7 +12,7 @@ function downloadContent(pathPrefix, commentList) {
       path.resolve(__dirname, `../comments/${pathPrefix}/文字评论/content.txt`),
       commentsContent,
       {
-        encoding: "utf8",
+        encoding: "utf-8",
       },
       (err) => {
         if (err) {

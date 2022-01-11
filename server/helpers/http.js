@@ -1,14 +1,26 @@
 const https = require("https");
 const axios = require("axios");
+const iconv = require("iconv-lite");
 
 function getData(url) {
-  return axios.get(url, {
-    headers: {
-      Accept: "*/*",
-      Connection: "keep-alive",
-      "Accept-Encoding": "gzip, deflate, br",
-      "User-Agent": "PostmanRuntime/7.28.1",
-    },
+  return new Promise((resolve, reject) => {
+    axios
+      .get(url, {
+        headers: {
+          Accept: "text/html;charset=GBK",
+          Connection: "keep-alive",
+          "Accept-Encoding": "gzip, deflate, br",
+          "User-Agent": "PostmanRuntime/7.28.1",
+        },
+        responseType: "arraybuffer",
+      })
+      .then((res) => {
+        const json = JSON.parse(iconv.decode(res.data, "GBK"));
+        resolve(json);
+      })
+      .catch((err) => {
+        reject(err);
+      });
   });
   return new Promise((resolve, reject) => {
     https

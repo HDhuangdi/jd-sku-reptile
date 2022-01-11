@@ -23,7 +23,7 @@ app.get("/api", async (req, res) => {
     const targetPath = path.resolve(__dirname, "./comments/" + pathPrefix);
     const zipPath = targetPath + "/comments.zip";
 
-    const data = normalizeData("jd", result.data);
+    const data = normalizeData("jd", result);
     // 去京东获取评论详情,评论图片
     await generateComments(pathPrefix, data);
     // 将详情和图片打包成zip
