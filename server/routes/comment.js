@@ -45,14 +45,13 @@ router.get("/get", async (req, res) => {
 
     const endTime = new Date().getTime();
     httpLogger.info(
-      `请求:/api/comment/${req.url}, 响应成功, 用时${endTime -
-        startTime}ms, ip:${req.headers["x-real-ip"] ||
-        req.headers["x-forwarded-for"]}`
+      `请求:${req.originalUrl}, 响应成功, 用时${endTime - startTime}ms, ip:${req
+        .headers["x-real-ip"] || req.headers["x-forwarded-for"]}`
     );
   } catch (e) {
     const endTime = new Date().getTime();
     errorLogger.error(
-      `请求:${req.url}, 响应失败:${e}, 用时${endTime - startTime}ms`
+      `请求:${req.originalUrl}, 响应失败:${e}, 用时${endTime - startTime}ms`
     );
     res.status(500).send(e);
     throw e;
