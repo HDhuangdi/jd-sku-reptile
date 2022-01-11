@@ -32,7 +32,7 @@ router.get("/get", async (req, res) => {
 
     res.set({
       "Content-Type": "application/octet-stream",
-      "Content-Disposition": "attachment; filename=comments.zip",
+      "Content-Disposition": `attachment; filename=${req.query.sku}.zip`,
       "Content-Length": size,
     });
 
