@@ -8,7 +8,8 @@ function generateZIPFolder(zip, pathname) {
   files.forEach((file) => {
     const curPathname = pathname + "/" + file;
     if (fs.statSync(curPathname).isDirectory()) {
-      generateZIPFolder(zip, curPathname);
+      const folder = zip.folder(file);
+      generateZIPFolder(folder, curPathname);
     } else {
       const ext = path.extname(file);
       let binary = ext === ".jpg" || ext === ".png";

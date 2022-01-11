@@ -2,10 +2,13 @@ const express = require("express");
 const router = express.Router();
 const fs = require("fs");
 const { generateUrl, normalizeData } = require("../platforms");
-const { getCommentData } = require("../helpers/http.js");
-const { generateCommentsDir } = require("../helpers/download");
-const { removeDir, generatePathPrefix } = require("../helpers/fs");
-const { generateZIP } = require("../helpers/zip");
+const {
+  getCommentData,
+  generateCommentsDir,
+  removeDir,
+  generatePathPrefix,
+  generateZIP,
+} = require("../helpers");
 const { httpLogger, errorLogger } = require("../log4js/config");
 const ParamsException = require("../error/ParamsException");
 
@@ -42,8 +45,9 @@ router.get("/get", async (req, res) => {
 
     const endTime = new Date().getTime();
     httpLogger.info(
-      `请求:${req.url}, 响应成功, 用时${endTime - startTime}ms, ip:${req
-        .headers["x-real-ip"] || req.headers["x-forwarded-for"]}`
+      `请求:/api/comment/${req.url}, 响应成功, 用时${endTime -
+        startTime}ms, ip:${req.headers["x-real-ip"] ||
+        req.headers["x-forwarded-for"]}`
     );
   } catch (e) {
     const endTime = new Date().getTime();

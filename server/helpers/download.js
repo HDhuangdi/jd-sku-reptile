@@ -19,27 +19,19 @@ async function downloadPic(srcList, dest) {
   }
 }
 
-function downloadCommentContent(pathPrefix, commentList) {
+async function downloadCommentContent(pathPrefix, commentList) {
   let commentsContent = "";
-  return new Promise((resolve, reject) => {
-    commentList.forEach((comment) => {
-      commentsContent += comment.content + "\n\n\n\n\n\n";
-    });
-    writeFile(
-      path.resolve(__dirname, `../comments/${pathPrefix}/文字评论/content.txt`),
-      commentsContent,
-      {
-        encoding: "utf-8",
-      },
-      (err) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve();
-        }
-      }
-    );
+
+  commentList.forEach((comment) => {
+    commentsContent += comment.content + "\n\n\n\n\n\n";
   });
+  await writeFile(
+    path.resolve(__dirname, `../comments/${pathPrefix}/文字评论/content.txt`),
+    commentsContent,
+    {
+      encoding: "utf-8",
+    }
+  );
 }
 
 async function downloadCommentPic(pathPrefix, commentList) {
@@ -73,21 +65,27 @@ async function downloadMainPic(pathPrefix, html) {
   const imgNodeList = $("#spec-list img");
   const srcList = [];
   for (const node of imgNodeList) {
-    srcList.push("https:" + node.attribs.src.replace("54x54", "1000x1000"));
+    const suffix = node.attribs.src.split("jfs")[1];
+    srcList.push("https://img30.360buyimg.com/imgzone/jfs" + suffix);
   }
 
-  await downloadPic(srcList, `../details/${pathPrefix}/图片`);
+  await downloadPic(srcList, `../details/${pathPrefix}/图片/主图`);
   return path.resolve(__dirname, `../details/${pathPrefix}`);
 }
 
 async function downloadDetailsPic(pathPrefix, html) {
-  const $ = cheerio.load(html);
-  const imgNodeList = $("img");
-  const srcList = [];
-  for (const node of imgNodeList) {
-    srcList.push(node.attribs["data-lazyload"]);
-  }
-  await downloadPic(srcList, `../details/${pathPrefix}/图片`);
+  const res = html.match(/\/\/[\w\d\.\/]*\.jpg/g);
+  const srcList = res.map((url) => {
+    let temp = url.split("//");
+    if (temp[0]) {
+      //has protocol
+      return url;
+    } else {
+      return "https:" + url;
+    }
+  });
+
+  await downloadPic(srcList, `../details/${pathPrefix}/图片/详情`);
   return path.resolve(__dirname, `../details/${pathPrefix}`);
 }
 

@@ -12,10 +12,6 @@
           <span>sku:</span>
           <el-input v-model="sku" placeholder="这里写sku"></el-input>
         </div>
-        <div class="form-item flex-box">
-          <span>main-sku:</span>
-          <el-input v-model="mainSku" placeholder="这里写mainSku"></el-input>
-        </div>
         <el-button :disabled="buttonDisabled" type="primary" @click="query"
           >开始下载</el-button
         >
@@ -38,16 +34,11 @@ class Title {
 
 function useApp(setTitle) {
   let sku = ref("");
-  let mainSku = ref("");
+
   let buttonDisabled = ref(true);
 
   watch(sku, (newVal) => {
-    if (newVal.value !== "" && mainSku.value !== "") {
-      buttonDisabled.value = false;
-    }
-  });
-  watch(mainSku, (newVal) => {
-    if (newVal.value !== "" && sku.value !== "") {
+    if (newVal.value !== "") {
       buttonDisabled.value = false;
     }
   });
@@ -57,7 +48,7 @@ function useApp(setTitle) {
     setTitle(Title.loading);
     try {
       const res = await axios({
-        url: `/api/details/get?sku=${sku.value}&mainSku=${mainSku.value}`,
+        url: `/api/details/get?sku=${sku.value}`,
         method: "get",
         responseType: "blob",
       });
@@ -91,7 +82,6 @@ function useApp(setTitle) {
 
   return {
     sku,
-    mainSku,
     buttonDisabled,
     query,
   };

@@ -1,29 +1,37 @@
 const express = require("express");
 const router = express.Router();
 const fs = require("fs");
-const { getProductMainPage, getProductDetailPage } = require("../helpers/http");
-const { removeDir, generatePathPrefix } = require("../helpers/fs");
-const { downloadMainPic, downloadDetailsPic } = require("../helpers/download");
-const { generateZIP } = require("../helpers/zip");
+const {
+  getProductMainPage,
+  getProductDetailPage,
+  removeDir,
+  generatePathPrefix,
+  downloadMainPic,
+  downloadDetailsPic,
+  generateZIP,
+  getMainSkuId,
+} = require("../helpers");
 const { httpLogger, errorLogger } = require("../log4js/config");
 
 router.get("/get", async (req, res) => {
   const startTime = new Date().getTime();
   try {
     checkParams(req.query);
-    const resArr = await Promise.all([
-      getProductMainPage(req.query.sku),
-      getProductDetailPage(req.query.mainSku, req.query.sku),
-    ]);
+    const mainPageRes = await getProductMainPage(req.query.sku);
+    const mainSkuId = getMainSkuId(mainPageRes);
+    const detailPageRes = await getProductDetailPage(mainSkuId, req.query.sku);
+
     const { pathPrefix } = generatePathPrefix();
 
-    const detailHTML = JSON.parse(resArr[1].match(/\{[\s\S]*\}/)[0]).content;
+    const detailHTML = JSON.parse(detailPageRes.match(/\{[\s\S]*\}/)[0])
+      .content;
     const [targetPath] = await Promise.all([
       // 获取主图
-      downloadMainPic(pathPrefix, resArr[0]),
+      downloadMainPic(pathPrefix, mainPageRes),
       // 获取详情图
       downloadDetailsPic(pathPrefix, detailHTML),
     ]);
+
     // 将详情和图片打包成zip;
     const zipPath = await generateZIP(targetPath, req.query.sku + ".zip");
 
