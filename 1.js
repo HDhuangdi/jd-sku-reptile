@@ -1,0 +1,1 @@
+https://cd.jd.com/description/channel?skuId=100009464799&mainSkuId=100009464799&charset=utf-8&cdn=2&callback=showdesc

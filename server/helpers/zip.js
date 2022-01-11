@@ -21,9 +21,9 @@ function generateZIPFolder(zip, pathname) {
   });
 }
 
-function generateZIP(pathname) {
+function generateZIP(pathname, zipname) {
   return new Promise((resolve, reject) => {
-    const targetPathname = pathname + "/comments.zip";
+    const targetPathname = pathname + "/" + zipname;
     if (fs.existsSync(targetPathname)) {
       fs.unlinkSync(targetPathname);
     }
@@ -42,9 +42,8 @@ function generateZIP(pathname) {
       .then((res) => {
         try {
           fs.writeFileSync(targetPathname, res, "utf-8");
-          resolve();
+          resolve(targetPathname);
         } catch (e) {
-          console.log(e);
           reject(e);
         }
       })

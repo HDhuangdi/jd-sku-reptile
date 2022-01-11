@@ -82,9 +82,14 @@ function writeFileSync(path, content, options) {
   return fs.writeFileSync(path, content, options);
 }
 
-function writeFile(path, content, options, cb) {
+function writeFile(path, content, options) {
   checkPath(path);
-  return fs.writeFile(path, content, options, cb);
+  return new Promise((resolve, reject) => {
+    fs.writeFile(path, content, options, (err) => {
+      if (err) reject(err);
+      resolve();
+    });
+  });
 }
 
 module.exports = {

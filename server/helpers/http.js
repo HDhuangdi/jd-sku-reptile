@@ -2,7 +2,7 @@ const https = require("https");
 const axios = require("axios");
 const iconv = require("iconv-lite");
 
-function getData(url) {
+function getCommentData(url) {
   return new Promise((resolve, reject) => {
     axios
       .get(url, {
@@ -22,22 +22,33 @@ function getData(url) {
         reject(err);
       });
   });
+}
+
+function getProductMainPage(sku) {
   return new Promise((resolve, reject) => {
-    https
-      .get(url, (res) => {
-        let data = [];
-        res.on("data", (chunk) => {
-          data.push(chunk);
-        });
-        res.on("end", () => {
-          var iconv = require("iconv-lite");
-          var decodedBody = iconv.decode(Buffer.concat(data), "GBK");
-          resolve(decodedBody);
-        });
-      })
-      .on("error", (err) => {
-        reject(err);
-      });
+    axios
+      .get(`https://item.jd.com/${sku}.html`)
+      .then((res) => resolve(res.data))
+      .catch((err) => reject(err));
+  });
+}
+
+function getProductDetailPage(mainSku, sku) {
+  return new Promise((resolve, reject) => {
+    axios
+      .get(
+        `https://cd.jd.com/description/channel?skuId=${sku}&mainSkuId=${mainSku}&charset=utf-8&cdn=2&callback=showdesc`,
+        {
+          headers: {
+            Accept: "text/html;charset=utf-8",
+            Connection: "keep-alive",
+            "Accept-Encoding": "gzip, deflate, br",
+            "User-Agent": "PostmanRuntime/7.28.1",
+          },
+        }
+      )
+      .then((res) => resolve(res.data))
+      .catch((err) => reject(err));
   });
 }
 
@@ -57,4 +68,9 @@ function getPic(url) {
   });
 }
 
-module.exports = { getData, getPic };
+module.exports = {
+  getCommentData,
+  getPic,
+  getProductMainPage,
+  getProductDetailPage,
+};

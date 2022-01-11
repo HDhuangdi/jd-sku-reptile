@@ -1,5 +1,5 @@
 <template>
-  <router-view></router-view>
+  <div class="main-pic">11</div>
 </template>
 
 <script>
