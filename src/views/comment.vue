@@ -42,13 +42,13 @@ import axios from "axios";
 class Title {
   static default = "京东评论爬虫工具";
   static enter = "京东评论爬虫工具";
-  static loading = "爬取数据ing...";
+  static loading = "下崽ing...";
   static end = "京东评论爬虫工具";
 }
 
 function useApp(setTitle) {
   let sku = ref("");
-  let page = ref("0");
+  let page = ref("1");
   let pageSize = ref("10");
   let buttonDisabled = ref(true);
 

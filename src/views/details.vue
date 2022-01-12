@@ -28,7 +28,7 @@ import axios from "axios";
 class Title {
   static default = "京东主图、详情爬虫工具";
   static enter = "京东主图、详情爬虫工具";
-  static loading = "爬取数据ing...";
+  static loading = "下崽ing...";
   static end = "京东主图、详情爬虫工具";
 }
 
