@@ -1,6 +1,6 @@
 const cheerio = require("cheerio");
 const { getPic } = require("./http");
-const { writeFile } = require("./fs");
+const { writeFile, genFileName } = require("./fs");
 const path = require("path");
 
 async function downloadPic(srcList, dest) {
@@ -8,11 +8,16 @@ async function downloadPic(srcList, dest) {
     const resArr = await Promise.all(srcList.map((url) => getPic(url)));
     const promiseArr = resArr.map((res, index) => {
       const splitArr = srcList[index].split("/");
-      const picName = splitArr[splitArr.length - 1];
-      return writeFile(path.resolve(__dirname, `${dest}/${picName}`), res, {
-        encoding: "binary",
-      });
+      const extName = "." + splitArr[splitArr.length - 1].split(".")[1];
+      return writeFile(
+        path.resolve(__dirname, `${dest}/${genFileName(index, extName)}`),
+        res,
+        {
+          encoding: "binary",
+        }
+      );
     });
+
     await Promise.all(promiseArr);
   } catch (e) {
     throw e;

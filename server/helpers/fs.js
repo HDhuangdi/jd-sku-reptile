@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const { v4 } = require("uuid");
 const { dateFormat } = require("./date");
 
 function generatePathPrefix() {
@@ -87,9 +88,14 @@ function writeFile(path, content, options) {
   return new Promise((resolve, reject) => {
     fs.writeFile(path, content, options, (err) => {
       if (err) reject(err);
-      resolve();
+      resolve(path);
     });
   });
+}
+
+function genFileName(pattern, ext) {
+  const uuid = v4();
+  return pattern + "-" + uuid + "-" + new Date().getTime() + ext;
 }
 
 module.exports = {
@@ -98,4 +104,5 @@ module.exports = {
   generatePathPrefix,
   writeFileSync,
   writeFile,
+  genFileName,
 };
