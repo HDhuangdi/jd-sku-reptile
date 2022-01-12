@@ -13,7 +13,7 @@
           <el-input v-model="sku" placeholder="这里写sku"></el-input>
         </div>
         <el-button :disabled="buttonDisabled" type="primary" @click="query"
-          >开始下载</el-button
+          >开始下崽</el-button
         >
       </form>
     </main>
