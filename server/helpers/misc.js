@@ -1,6 +1,6 @@
 function getMainSkuId(html) {
   const result = html.match(/mainSkuId=(\d+)/);
-  return result[1];
+  return result ? result[1] : "";
 }
 
 const flushPromiseSchedule = async (schedule, result = []) => {
