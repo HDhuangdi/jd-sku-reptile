@@ -51,7 +51,9 @@ router.get("/get", async (req, res) => {
   } catch (e) {
     const endTime = new Date().getTime();
     errorLogger.error(
-      `请求:${req.originalUrl}, 响应失败:${e}, 用时${endTime - startTime}ms`
+      `请求:${req.originalUrl}, 响应失败:${e}, 用时${endTime - startTime}ms, ${
+        e.stack
+      }`
     );
     res.status(500).send(e);
     throw e;
