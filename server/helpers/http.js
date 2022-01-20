@@ -1,6 +1,7 @@
 const https = require("https");
 const axios = require("axios");
 const iconv = require("iconv-lite");
+const { getUserAgent } = require("./misc");
 
 function getCommentData(url) {
   return new Promise((resolve, reject) => {
@@ -27,7 +28,11 @@ function getCommentData(url) {
 function getProductMainPage(sku) {
   return new Promise((resolve, reject) => {
     axios
-      .get(`https://item.jd.com/${sku}.html`)
+      .get(`https://item.jd.com/${sku}.html`, {
+        headers: {
+          "User-Agent": getUserAgent("PostmanRuntime/7.28.1"),
+        },
+      })
       .then((res) => resolve(res.data))
       .catch((err) => reject(err));
   });
@@ -43,7 +48,7 @@ function getProductDetailPage(mainSku, sku) {
             Accept: "text/html;charset=utf-8",
             Connection: "keep-alive",
             "Accept-Encoding": "gzip, deflate, br",
-            "User-Agent": "PostmanRuntime/7.28.1",
+            "User-Agent": getUserAgent("PostmanRuntime/7.28.1"),
           },
         }
       )
